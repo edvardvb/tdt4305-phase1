@@ -9,6 +9,7 @@ rdd = get_rdd(sc) #Number of tweets: 2715066
 
 #b)
 user_rdd = rdd.map(lambda x: x.split('\t')[7]).distinct() #Number of distinct users: 583299
+
 #print(user_rdd.count())
 
 #c)
@@ -22,3 +23,7 @@ place_name_rdd = rdd.map(lambda x: x.split('\t')[4]).distinct() #Number of disti
 #e)
 language_rdd = rdd.map(lambda x: x.split('\t')[5]).distinct() #Number of distinct languages: 46
 #print(language_rdd.count())
+
+#f)
+min_latitude_rdd = rdd.map(lambda x: x.split('\t')[12]).min()
+print(min_latitude_rdd)
