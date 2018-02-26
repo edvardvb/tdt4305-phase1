@@ -8,7 +8,6 @@ header = ['utc_time', 'country_name', 'country_code', 'place_type', \
             'timezone_offset', 'number_of_friends', 'tweet_text', \
             'latitude', 'longitude']
 
-
 #1.a)
 print('Number of tweets:' + str(tweets.count())) #Number of tweets when not sampled: 2715066
 
@@ -43,4 +42,3 @@ print('The minimum longitude is: ' + str(min_longitude))
 #1.i)
 max_longitude =  tweets.map(lambda x: x[header.index('longitude')]).max()
 print('The maximum longitude is: ' + str(max_longitude))
-
