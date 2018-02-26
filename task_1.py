@@ -1,7 +1,7 @@
-from pyspark import SparkConf, SparkContext
+from utils import get_rdd, get_conf, get_context
 
-conf = SparkConf().setAppName("Task_1")
-sc = SparkContext(conf=conf)
+conf = get_conf('Task_1')
+sc = get_context(conf)
+rdd = get_rdd(sc)
 
-rdd = sc.textFile('data/geotweets.tsv')
 print(rdd.sample(False, 0.1, 5).collect())
