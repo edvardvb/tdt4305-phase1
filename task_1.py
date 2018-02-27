@@ -1,5 +1,7 @@
 from utils import get_tweets, get_conf, get_context
 
+from pyspark.sql.functions import avg
+
 conf = get_conf('Task_1')
 sc = get_context(conf)
 tweets = get_tweets(sc)
@@ -42,3 +44,16 @@ print('The minimum longitude is: ' + str(min_longitude))
 #1.i)
 max_longitude =  tweets.map(lambda x: x[header.index('longitude')]).max()
 print('The maximum longitude is: ' + str(max_longitude))
+
+#1.j)
+#returns a tuple with (sum, count)
+sum_count = tweets.map(lambda x: x[header.index('tweet_text')])     \
+    .map(lambda x: len(x))                                          \
+    .aggregate(                                                     \
+        (0,0.0),                                                    \
+        (lambda x, y: (x[0]+y,x[1]+1)),                             \
+        (lambda rdd1, rdd2: (rdd1[0]+rdd2[0], rdd1[1]+rdd2[1])))
+
+#I would like to do this reduce as an actual spark-method, not a python builtin
+avg_tweet_length = reduce(lambda x, y: x/y, sum_count)
+print(avg_tweet_length)
