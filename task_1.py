@@ -1,11 +1,9 @@
 from utils import get_tweets, get_conf, get_context, get_stop_words
 from functools import reduce
 
-from pyspark.sql.functions import avg
-
 conf = get_conf('Task_1')
 sc = get_context(conf)
-tweets = get_tweets(sc)
+tweets = get_tweets(sc, sample=True)
 header = ['utc_time', 'country_name', 'country_code', 'place_type', \
             'place_name', 'language', 'username', 'user_screen_name', \
             'timezone_offset', 'number_of_friends', 'tweet_text', \
