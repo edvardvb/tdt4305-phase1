@@ -9,3 +9,6 @@ def get_context(conf):
 
 def get_tweets(context):
     return context.textFile('data/geotweets.tsv').map(lambda x: x.split('\t')).sample(False, 0.1, 5)
+
+def get_stop_words():
+    return open('data/stop_words.txt', 'r').readlines()
