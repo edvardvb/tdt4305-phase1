@@ -1,4 +1,5 @@
 from utils import get_tweets, get_conf, get_context
+from functools import reduce
 
 from pyspark.sql.functions import avg
 
@@ -46,7 +47,7 @@ max_longitude =  tweets.map(lambda x: x[header.index('longitude')]).max()
 print('The maximum longitude is: ' + str(max_longitude))
 
 #1.j)
-#returns a tuple with (sum, count)
+#returns a tuple with (sum of tweet lengths, count of tweets)
 sum_count = tweets.map(lambda x: x[header.index('tweet_text')])     \
     .map(lambda x: len(x))                                          \
     .aggregate(                                                     \
@@ -56,4 +57,24 @@ sum_count = tweets.map(lambda x: x[header.index('tweet_text')])     \
 
 #I would like to do this reduce as an actual spark-method, not a python builtin
 avg_tweet_length = reduce(lambda x, y: x/y, sum_count)
-print(avg_tweet_length)
+print('The average length of a tweet in characters is: ' + str(avg_tweet_length))
+
+#1.k)
+stop_words = open('data/stop_words.txt', 'r').readlines()
+
+def split_into_words(tweet):
+    words = tweet.lower().split(' ')
+    final_words = []
+    for word in words:
+        if not word in stop_words and len(word) > 1:
+            final_words.append(word)
+    return final_words
+
+sum_count = tweets.map(lambda x: x[header.index('tweet_text')]).map(lambda x: split_into_words(x)).map(lambda x: len(x)) \
+    .aggregate(                                                     \
+        (0,0.0),                                                    \
+        (lambda x, y: (x[0]+y,x[1]+1)),                             \
+        (lambda rdd1, rdd2: (rdd1[0]+rdd2[0], rdd1[1]+rdd2[1])))
+
+avg_tweet_length_in_words = reduce(lambda x, y: x/y, sum_count)
+print('The average length of a tweet in words is: ' + str(avg_tweet_length_in_words))
