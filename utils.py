@@ -13,3 +13,10 @@ def get_tweets(context, sample=False):
     
 def get_stop_words():
     return open('data/stop_words.txt', 'r').readlines()
+
+def setup(task_number, sample=False):
+    conf = get_conf(f'Task_{task_number}')
+    sc = get_context(conf)
+    tweets = get_tweets(sc, sample=sample)
+    result_path = f'data/result_{task_number}.tsv'
+    return (conf, sc, tweets, result_path)

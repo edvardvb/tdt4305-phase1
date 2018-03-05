@@ -1,10 +1,7 @@
-from utils import get_tweets, get_conf, get_context
+from utils import setup
 from constants import header
 
-conf = get_conf('Task_2')
-sc = get_context(conf)
-tweets = get_tweets(sc, sample=True)
-
+conf, sc, tweets, result_path = setup(2, sample=True)
 
 ''' I think this is the correct solution, but not 100% sure.
 Probably a better way to format the tuples for the text file?
@@ -14,4 +11,4 @@ tweets.map(lambda x: (x[header.index('country_name')], 1))\
     .aggregateByKey(0, (lambda x, y: x + y), (lambda rdd1, rdd2: (rdd1+rdd2)))\
     .sortByKey()\
     .sortBy(lambda t: t[1], False)\
-    .map(lambda x: "%s\t%s" %(x[0], x[1])).coalesce(1).saveAsTextFile("data/result_2.tsv")
+    .map(lambda x: "%s\t%s" %(x[0], x[1])).coalesce(1).saveAsTextFile(result_path)

@@ -1,12 +1,10 @@
-from utils import get_tweets, get_conf, get_context, get_stop_words
+from utils import setup
 from constants import header
 from functools import reduce
 
-conf = get_conf('Task_1')
-sc = get_context(conf)
-tweets = get_tweets(sc, sample=True)
+conf, sc, tweets, result_path = setup(1, sample=True)
 
-result_file = open('data/result_1.tsv', 'w')
+result_file = open(result_path, 'w')
 
 #1.a)
 number_of_tweets = tweets.count()
