@@ -37,22 +37,22 @@ print('Number of distinct languages used in tweets: ' + str(distinct_languages.c
 result_file.write(str(distinct_languages.count())+'\n')
 
 #1.f)
-min_latitude = tweets.map(lambda x: x[header.index('latitude')]).min()
+min_latitude = tweets.map(lambda x: x[header.index('latitude')]).map(lambda x: float(x)).min()
 print('The minimum latitude is: ' + str(min_latitude))
 result_file.write(str(min_latitude)+'\n')
 
 #1.g)
-max_latitude = tweets.map(lambda x: x[header.index('latitude')]).max()
+max_latitude = tweets.map(lambda x: x[header.index('latitude')]).map(lambda x: float(x)).max()
 print('The maxmimum latitude is: ' + str(max_latitude))
 result_file.write(str(max_latitude)+'\n')
 
 #1.h)
-min_longitude = tweets.map(lambda x: x[header.index('longitude')]).min()
+min_longitude = tweets.map(lambda x: x[header.index('longitude')]).map(lambda x: float(x)).min()
 print('The minimum longitude is: ' + str(min_longitude))
 result_file.write(str(min_longitude)+'\n')
 
 #1.i)
-max_longitude =  tweets.map(lambda x: x[header.index('longitude')]).max()
+max_longitude =  tweets.map(lambda x: x[header.index('longitude')]).map(lambda x: float(x)).max()
 print('The maximum longitude is: ' + str(max_longitude))
 result_file.write(str(max_longitude)+'\n')
 
