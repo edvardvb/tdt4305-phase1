@@ -1,13 +1,10 @@
 from utils import get_tweets, get_conf, get_context, get_stop_words
+from constants import header
 from functools import reduce
 
 conf = get_conf('Task_1')
 sc = get_context(conf)
 tweets = get_tweets(sc, sample=True)
-header = ['utc_time', 'country_name', 'country_code', 'place_type', \
-            'place_name', 'language', 'username', 'user_screen_name', \
-            'timezone_offset', 'number_of_friends', 'tweet_text', \
-            'latitude', 'longitude']
 
 result_file = open('data/result_1.tsv', 'w')
 
@@ -58,11 +55,11 @@ result_file.write(str(max_longitude)+'\n')
 
 #1.j)
 #returns a tuple with (sum of tweet lengths, count of tweets)
-sum_count = tweets.map(lambda x: x[header.index('tweet_text')])     \
-    .map(lambda x: len(x))                                          \
-    .aggregate(                                                     \
-        (0,0.0),                                                    \
-        (lambda x, y: (x[0]+y,x[1]+1)),                             \
+sum_count = tweets.map(lambda x: x[header.index('tweet_text')])\
+    .map(lambda x: len(x))\
+    .aggregate(
+        (0,0.0),
+        (lambda x, y: (x[0]+y,x[1]+1)),
         (lambda rdd1, rdd2: (rdd1[0]+rdd2[0], rdd1[1]+rdd2[1])))
 
 #I would like to do this reduce as an actual spark-method, not a python builtin
@@ -81,12 +78,12 @@ def split_into_words(tweet):
             final_words.append(word)
     return final_words
 
-sum_count = tweets.map(lambda x: x[header.index('tweet_text')])     \
-    .map(lambda x: split_into_words(x))                             \
-    .map(lambda x: len(x))                                          \
-    .aggregate(                                                     \
-        (0,0.0),                                                    \
-        (lambda x, y: (x[0]+y,x[1]+1)),                             \
+sum_count = tweets.map(lambda x: x[header.index('tweet_text')])\
+    .map(lambda x: split_into_words(x))\
+    .map(lambda x: len(x))\
+    .aggregate(
+        (0,0.0),
+        (lambda x, y: (x[0]+y,x[1]+1)),
         (lambda rdd1, rdd2: (rdd1[0]+rdd2[0], rdd1[1]+rdd2[1])))
 
 avg_tweet_length_in_words = reduce(lambda x, y: x/y, sum_count)
