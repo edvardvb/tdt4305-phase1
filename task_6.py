@@ -1,23 +1,17 @@
-from utils import setup
+from utils import setup, get_stop_words
 from constants import header
 from operator import add
 
-conf, sc, tweets, result_path = setup(6, sample=True)
+conf, sc, tweets, result_path = setup(6, sample=False)
 stop_words = get_stop_words()
+result_file = open(result_path, 'w')
 
-hei = tweets.filter(lambda x: (x[header.index('country_code')] == 'US'))\
-    .map(lambda x: x[header.index('tweet_text')])\
-    .flatMap(lambda x: x.split())\
-    .filter(lambda word: len(word) > 2)\
-    .flatMap(lambda x: [(x, 1) for i in x])\
+top_10 = tweets.filter(lambda x: (x[header.index('country_code')] == 'US'))\
+    .flatMap(lambda x: x[header.index('tweet_text')].lower().split(" "))\
+    .filter(lambda word: len(word) > 2 and not word in stop_words)\
+    .map(lambda x: (x, 1))\
     .reduceByKey(add)\
-    .takeOrdered(10, key=lambda x: -x[1])
-print(hei)
+    .takeOrdered(10, key=lambda x: -x[1])\
 
-def split_into_words(tweet):
-    words = tweet.lower().split(' ')
-    final_words = []
-    for word in words:
-        if not word in stop_words and len(word) > 1:
-            final_words.append(word)
-    return final_words
+for line in top_10:
+    result_file.write(f'{line[0]}\t{line[1]}\n')
