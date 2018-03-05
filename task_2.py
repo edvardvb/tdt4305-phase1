@@ -10,9 +10,8 @@ tweets = get_tweets(sc, sample=True)
 Probably a better way to format the tuples for the text file?
 And it is most likely a better way to do the "first by count, then by name"-sorting
  '''
-tweets.map(lambda x: x[header.index('country_name')])\
-    .map(lambda x: (x, 1))\
-    .reduceByKey(lambda x, y: x + y)\
+tweets.map(lambda x: (x[header.index('country_name')], 1))\
+    .aggregateByKey(0, (lambda x, y: x + y), (lambda rdd1, rdd2: (rdd1+rdd2)))\
     .sortByKey()\
     .sortBy(lambda t: t[1], False)\
     .map(lambda x: "%s\t%s" %(x[0], x[1])).coalesce(1).saveAsTextFile("data/result_2.tsv")
