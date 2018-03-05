@@ -8,7 +8,7 @@ result_file = open(result_path, 'w')
 
 top_10 = tweets.filter(lambda x: (x[header.index('country_code')] == 'US'))\
     .flatMap(lambda x: x[header.index('tweet_text')].lower().split(" "))\
-    .filter(lambda word: len(word) > 2 and not word in stop_words)\
+    .filter(lambda word: len(word) >= 2 and not word in stop_words)\
     .map(lambda x: (x, 1))\
     .reduceByKey(add)\
     .takeOrdered(10, key=lambda x: -x[1])\
