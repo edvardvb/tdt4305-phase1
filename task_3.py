@@ -6,8 +6,7 @@ conf, sc, tweets, result_path = setup(3, sample=True)
 def centroid(size, sum_of_lat, sum_of_long):
     return (sum_of_lat/size, sum_of_long/size)
 
-
-hei = tweets.map(lambda x: (x[header.index('country_name')], 1, float(x[header.index('latitude')]), float(x[header.index('longitude')])))\
+tweets.map(lambda x: (x[header.index('country_name')], 1, float(x[header.index('latitude')]), float(x[header.index('longitude')])))\
     .keyBy(lambda x: x[0])\
     .aggregateByKey(
         (0, 0.0, 0.0),
