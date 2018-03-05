@@ -3,7 +3,7 @@ from constants import header
 
 conf, sc, tweets, result_path = setup(5, sample=True)
 
-tweets.filter(lambda x: x[header.index('country_code')] == 'US')\
+tweets.filter(lambda x: x[header.index('country_code')] == 'US' and x[header.index('place_type')] == 'city')\
     .map(lambda x: (x[header.index('place_name')], 1))\
     .aggregateByKey(0, (lambda x, y: x + y), (lambda rdd1, rdd2: (rdd1+rdd2)))\
     .sortByKey()\
