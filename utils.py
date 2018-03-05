@@ -12,7 +12,11 @@ def get_tweets(context, sample=False):
     return tweets.sample(False, 0.1, 5) if sample else tweets
     
 def get_stop_words():
-    return open('data/stop_words.txt', 'r').readlines()
+    stripped = []
+    with open('data/stop_words.txt', 'r') as file:
+        for line in file:
+            stripped.append(line.strip('\n'))
+        return stripped
 
 def setup(task_number, sample=False):
     conf = get_conf(f'Task_{task_number}')
