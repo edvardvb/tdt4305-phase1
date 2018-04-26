@@ -9,3 +9,8 @@ tweets.filter(lambda x: x[header.index('country_code')] == 'US' and x[header.ind
     .sortByKey()\
     .sortBy(lambda x: x[1], False)\
     .map(lambda x: f'{x[0]}\t{x[1]}').coalesce(1).saveAsTextFile(result_path)
+
+#Filtrerer ut tweets, henter kun tweets fra cities i USA
+#Mapper til sted og tellegreie
+#Aggregerer for å telle antall tweets per plass
+#Sorterer på samme måte som forrige gang, mapper, lagrer

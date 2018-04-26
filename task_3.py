@@ -16,3 +16,11 @@ tweets.map(lambda x: (x[header.index('country_name')], 1, float(x[header.index('
     .filter(lambda x: x[1][0] > 10)\
     .map(lambda x: (x[0],centroid(*x[1])))\
     .map(lambda x: f'{x[0]}\t{x[1][0]}\t{x[1][1]}').coalesce(1).saveAsTextFile(result_path)
+
+#Henter ut land, telle-ting, lat og long som floats
+#Setter land som key
+#Aggregerer ved å summere telleren, breddegradene og lengdegradene
+#Filtrerer ut de under 10 tweets
+#Mapper til (land, sentroide).
+#Beregner sentroide ved å sende inn (antall, sum av bredde, sum av lengde)
+#Mapper til riktig format, coalescer og lagrer

@@ -13,3 +13,10 @@ tweets.map(lambda x: (x[header.index('country_name')], int(x[header.index('utc_t
     .map(lambda x: f'{x[0]}\t{x[1][0]}\t{x[1][1]}')\
     .coalesce(1)\
     .saveAsTextFile(result_path)
+
+#Henter land, og (tid + offset) som int
+#Mapper til ((land, hour fra datetime-objekt), telle-greie).
+#Aggregerer med tuppelen som key, og teller hvor mange tweets som kommer per time, per land
+#Mapper til ((land), (hour, antall))
+#Bruker reduce til å hente den timen med høyest antall
+#mapper, coalescer og lagrer

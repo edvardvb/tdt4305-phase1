@@ -2,7 +2,7 @@ from utils import setup
 from constants import header
 from functools import reduce
 
-conf, sc, tweets, result_path = setup(1, sample=True)
+conf, sc, tweets, result_path = setup(1, sample=False)
 
 result_file = open(result_path, 'w')
 
@@ -61,7 +61,8 @@ sum_count = tweets.map(lambda x: x[header.index('tweet_text')])\
         (lambda rdd1, rdd2: (rdd1[0]+rdd2[0], rdd1[1]+rdd2[1])))
 
 #I would like to do this reduce as an actual spark-method, not a python builtin
-avg_tweet_length = reduce(lambda x, y: x/y, sum_count)
+#This could also be done as: avg_tweet_length = sum_count[0]/sum_count[1]
+avg_tweet_length = reduce(lambda x, y: x/y, sum_count
 print('The average length of a tweet in characters is: ' + str(avg_tweet_length))
 result_file.write(str(avg_tweet_length)+'\n')
 
@@ -74,6 +75,7 @@ sum_count = tweets.map(lambda x: x[header.index('tweet_text')])\
         (lambda x, y: (x[0]+y,x[1]+1)),
         (lambda rdd1, rdd2: (rdd1[0]+rdd2[0], rdd1[1]+rdd2[1])))
 
+#This could also be done as: avg_tweet_length_in_words = sum_count[0]/sum_count[1]
 avg_tweet_length_in_words = reduce(lambda x, y: x/y, sum_count)
 print('The average length of a tweet in words is: ' + str(avg_tweet_length_in_words))
 result_file.write(str(avg_tweet_length_in_words)+'\n')

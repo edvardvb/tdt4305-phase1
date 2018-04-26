@@ -15,3 +15,9 @@ top_10 = tweets.filter(lambda x: (x[header.index('country_code')] == 'US'))\
 
 for line in top_10:
     result_file.write(f'{line[0]}\t{line[1]}\n')
+
+#Henter tweets fra usa, flatmapper til en liste med alle ordene i disse tweetsene
+#Filtrerer ut ord med minimum lengde 2, og ut med stoppord
+#mapper til (ord, telle-greie),
+#reducer på keys for å telle antall ganger hvert ord dukker opp
+#henter topp 10 ord med takeOrdered, og printer til fil
