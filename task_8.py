@@ -4,7 +4,7 @@ from pyspark.sql.types import FloatType
 
 from utils import setup
 
-conf, sc, tweets, result_path = setup(81, sample=False)
+conf, sc, tweets, result_path = setup(81, sample=True)
 spark = SparkSession.builder.master("").enableHiveSupport().getOrCreate()
 tweetdf = spark.createDataFrame(tweets)
 new_tweetdf = tweetdf \
@@ -22,17 +22,20 @@ new_tweetdf = tweetdf \
     .withColumn('latitude', tweetdf._12.cast(FloatType())) \
     .withColumn('longitude', tweetdf._13.cast(FloatType())) \
 
+#Column names became _1 .. _13 when reading in as dataframe, rename them.
+#Lat and long must be casted to float
+
 result_file = open(result_path, 'w')
 
 #8.a)
 number_of_tweets = tweetdf.count()
 result_file.write(str(number_of_tweets)+'\n')
 
-#8.b)
+#8.b) Selects username and count how many distinct usernames there are
 number_of_users = new_tweetdf.select('username').distinct().count()
 result_file.write(str(number_of_users)+'\n')
 
-#8.c)
+#8.c) 
 number_of_countries = new_tweetdf.select('country_name').distinct().count()
 result_file.write(str(number_of_countries)+'\n')
 
@@ -44,12 +47,14 @@ result_file.write(str(number_of_places)+'\n')
 number_of_languages = new_tweetdf.select('language').distinct().count()
 result_file.write(str(number_of_languages)+'\n')
 
-#8.f)
+#8.f) Aggregate latitude with aggregation functions min and max, collect to get Row(min(latitude)) and Row(max(latitude))
+#which can be accessed when writing to file
 min_latitude = new_tweetdf.agg({'latitude': 'min'}).collect()[0]
 max_latitude = new_tweetdf.agg({'latitude': 'max'}).collect()[0]
 result_file.write(str(float(min_latitude['min(latitude)']))+'\n'+str(float(max_latitude['max(latitude)']))+'\n')
 
-#8.e)
+#8.e) Aggregate longitude with aggregation functions min and max, collect to get Row(min(longitude)) and Row(max(longitude))
+#which can be accessed when writing to file
 min_longitude = new_tweetdf.agg({'longitude': 'min'}).collect()[0]
 max_longitude = new_tweetdf.agg({'longitude': 'max'}).collect()[0]
 result_file.write(str(min_longitude['min(longitude)'])+'\n'+str(max_longitude['max(longitude)'])+'\n')
