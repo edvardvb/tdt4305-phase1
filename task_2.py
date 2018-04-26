@@ -13,7 +13,7 @@ tweets.map(lambda x: (x[header.index('country_name')], 1))\
     .sortBy(lambda t: t[1], False)\
     .map(lambda x: "%s\t%s" %(x[0], x[1])).coalesce(1).saveAsTextFile(result_path)
 
-#Landet bli key, har med '1' som telle-ting på greia.
+#Landet bli key, har med '1' som teller.
 #Sorterer først på key, deretter på antall.
-#Det gjør at sorteringen på key bevares om noen har samme antallself.
+#Det gjør at sorteringen på key bevares om noen har samme antall.
 #Mapper til riktig format, coalescer til 1 partisjon og lagrer.

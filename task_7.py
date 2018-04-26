@@ -61,5 +61,5 @@ sc.parallelize(top_5_cities)\
 
 #Lager en ny RDD med resultatet fra forrige. Hvorfor det?
 #Og hvorfor sorterer vi på samme igjen?
-#Mapper til (by, topp 10 ord). Splitter strengen, lowercase, og fjerner stoppord. Henter top 10 ordself.
+#Mapper til (by, topp 10 ord). Splitter strengen, lowercase, og fjerner stoppord. Henter top 10 ord.
 #Mapper til riktig format, coalescer og lagrer til fil
