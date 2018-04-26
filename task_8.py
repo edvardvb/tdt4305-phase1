@@ -47,13 +47,13 @@ result_file.write(str(number_of_places)+'\n')
 number_of_languages = new_tweetdf.select('language').distinct().count()
 result_file.write(str(number_of_languages)+'\n')
 
-#8.f) Aggregate latitude with aggregation functions min and max, collect to get Row(min(latitude)) and Row(max(latitude))
+#8.f) Aggregate latitude with aggregation functions min and max, collect[0] to get Row(min(latitude)) and Row(max(latitude))
 #which can be accessed when writing to file
 min_latitude = new_tweetdf.agg({'latitude': 'min'}).collect()[0]
 max_latitude = new_tweetdf.agg({'latitude': 'max'}).collect()[0]
 result_file.write(str(float(min_latitude['min(latitude)']))+'\n'+str(float(max_latitude['max(latitude)']))+'\n')
 
-#8.e) Aggregate longitude with aggregation functions min and max, collect to get Row(min(longitude)) and Row(max(longitude))
+#8.e) Aggregate longitude with aggregation functions min and max, collect[0] to get Row(min(longitude)) and Row(max(longitude))
 #which can be accessed when writing to file
 min_longitude = new_tweetdf.agg({'longitude': 'min'}).collect()[0]
 max_longitude = new_tweetdf.agg({'longitude': 'max'}).collect()[0]
